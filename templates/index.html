@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Saturn Bank (Secure with actix-web-lab)</title>
+     <style>
+        body { font-family: sans-serif; }
+        input { margin-bottom: 10px; }
+    </style>
+</head>
+<body>
+    <h1>Welcome to the Secure Saturn Bank</h1>
+    <h2>Transfer Funds</h2>
+    <form action="/transfer" method="POST">
+        <input type="hidden" name="csrf-token" value="{{ csrf_token }}">
+
+        <label for="bsb">BSB:</label><br>
+        <input type="text" id="bsb" name="bsb"><br>
+        <label for="account_no">Account No:</label><br>
+        <input type="text" id="account_no" name="account_no"><br>
+        <label for="amount">Amount:</label><br>
+        <input type="text" id="amount" name="amount"><br><br>
+        <input type="submit" value="Transfer">
+    </form>
+</body>
+</html>
