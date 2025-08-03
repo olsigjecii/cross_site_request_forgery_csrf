@@ -1,4 +1,4 @@
-# Rust and Actix Web: A Lesson in Cross-Site Request Forgery (CSRF)
+# Rust and Actix Web: A Lesson in Cross-Site Request Forgery (CSRF) in Rust 🦀
 
 This project is a hands-on lesson demonstrating how to identify, exploit, and prevent Cross-Site Request Forgery (CSRF) vulnerabilities in a Rust web application built with the Actix Web framework.
 
