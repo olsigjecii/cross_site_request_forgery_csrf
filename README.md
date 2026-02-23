@@ -1,4 +1,4 @@
-# Rust and Actix Web: A Lesson in Cross-Site Request Forgery (CSRF) in Rust 🦀
+# Cross-Site Request Forgery (CSRF) in Rust 🦀
 
 This project is a hands-on lesson demonstrating how to identify, exploit, and prevent Cross-Site Request Forgery (CSRF) vulnerabilities in a Rust web application built with the Actix Web framework.
 
@@ -15,9 +15,9 @@ Project Structure
 .
 ├── Cargo.toml
 ├── src
-│   └── main.rs
+│ └── main.rs
 └── templates
-    └── index.html
+└── index.html
 You will also create a malicious.html file locally to perform the attack.
 
 Setup Instructions
@@ -64,37 +64,37 @@ use tera::Tera;
 
 #[derive(Deserialize)]
 struct Transfer {
-    bsb: String,
-    account_no: String,
-    amount: u32,
+bsb: String,
+account_no: String,
+amount: u32,
 }
 
 #[get("/")]
 async fn index(tera: web::Data<Tera>, session: Session) -> impl Responder {
-    if session.get::<String>("user_id").unwrap().is_none() {
-        session.insert("user_id", "12345").unwrap();
-    }
-    let rendered = tera.render("index.html", &tera::Context::new()).unwrap();
-    HttpResponse::Ok().body(rendered)
+if session.get::<String>("user_id").unwrap().is_none() {
+session.insert("user_id", "12345").unwrap();
+}
+let rendered = tera.render("index.html", &tera::Context::new()).unwrap();
+HttpResponse::Ok().body(rendered)
 }
 
 #[post("/transfer")]
 async fn transfer(form: web::Form<Transfer>, session: Session) -> impl Responder {
-    if let Some(user_id) = session.get::<String>("user_id").unwrap() {
-        println!(
-            "✅ [VULNERABLE] SUCCESS: User '{}' transferred ${} to account {}/{}",
-            user_id, form.amount, form.bsb, form.account_no
-        );
-        HttpResponse::Ok().body("Transfer successful!")
-    } else {
-        HttpResponse::Unauthorized().body("You are not logged in.")
-    }
+if let Some(user_id) = session.get::<String>("user_id").unwrap() {
+println!(
+"✅ [VULNERABLE] SUCCESS: User '{}' transferred ${} to account {}/{}",
+user_id, form.amount, form.bsb, form.account_no
+);
+HttpResponse::Ok().body("Transfer successful!")
+} else {
+HttpResponse::Unauthorized().body("You are not logged in.")
+}
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let server_addr = "127.0.0.1:8080";
-    let secret_key = Key::generate();
+let server_addr = "127.0.0.1:8080";
+let secret_key = Key::generate();
 
     println!("🚀 Starting VULNERABLE server at http://{}", server_addr);
 
@@ -115,6 +115,7 @@ async fn main() -> std::io::Result<()> {
     .bind(server_addr)?
     .run()
     .await
+
 }
 &lt;/details>
 
@@ -204,27 +205,27 @@ base64 = "0.21"
 
 Rust
 
-use actix_session::{storage::CookieSessionStore, Session, SessionMiddleware};
+use actix*session::{storage::CookieSessionStore, Session, SessionMiddleware};
 use actix_web::cookie::{Key, SameSite};
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder};
-use base64::{engine::general_purpose, Engine as _};
+use base64::{engine::general_purpose, Engine as *};
 use rand::Rng;
 use serde::Deserialize;
 use tera::Tera;
 
 #[derive(Deserialize)]
 struct Transfer {
-    bsb: String,
-    account_no: String,
-    amount: u32,
-    csrf_token: String,
+bsb: String,
+account_no: String,
+amount: u32,
+csrf_token: String,
 }
 
 #[get("/")]
 async fn index(tera: web::Data<Tera>, session: Session) -> impl Responder {
-    if session.get::<String>("user_id").unwrap().is_none() {
-        session.insert("user_id", "12345").unwrap();
-    }
+if session.get::<String>("user_id").unwrap().is_none() {
+session.insert("user_id", "12345").unwrap();
+}
 
     let mut rng = rand::thread_rng();
     let token: [u8; 32] = rng.gen();
@@ -241,17 +242,18 @@ async fn index(tera: web::Data<Tera>, session: Session) -> impl Responder {
             HttpResponse::InternalServerError().body("An error occurred. Check server logs.")
         }
     }
+
 }
 
 #[post("/transfer")]
 async fn transfer(form: web::Form<Transfer>, session: Session) -> impl Responder {
-    if let Some(token) = session.get::<String>("csrf_token").unwrap() {
-        if form.csrf_token != token {
-            return HttpResponse::Forbidden().body("Invalid CSRF token.");
-        }
-    } else {
-        return HttpResponse::Forbidden().body("CSRF token not found in session.");
-    }
+if let Some(token) = session.get::<String>("csrf_token").unwrap() {
+if form.csrf_token != token {
+return HttpResponse::Forbidden().body("Invalid CSRF token.");
+}
+} else {
+return HttpResponse::Forbidden().body("CSRF token not found in session.");
+}
 
     if let Some(user_id) = session.get::<String>("user_id").unwrap() {
         println!(
@@ -262,12 +264,13 @@ async fn transfer(form: web::Form<Transfer>, session: Session) -> impl Responder
     } else {
         HttpResponse::Unauthorized().body("You are not logged in.")
     }
+
 }
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    let server_addr = "127.0.0.1:8080";
-    let secret_key = Key::generate();
+let server_addr = "127.0.0.1:8080";
+let secret_key = Key::generate();
 
     println!("🚀 Starting SECURE server at http://{}", server_addr);
 
@@ -287,6 +290,7 @@ async fn main() -> std::io::Result<()> {
     .bind(server_addr)?
     .run()
     .await
+
 }
 &lt;/details>
 
@@ -314,6 +318,7 @@ HTML
         <input type="text" id="amount" name="amount"><br><br>
         <input type="submit" value="Transfer">
     </form>
+
 </body>
 </html>
 &lt;/details>
